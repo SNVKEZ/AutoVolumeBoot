@@ -1,18 +1,18 @@
 package ru.belous.AutoVolumeBoot.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.belous.AutoVolumeBoot.entities.Person;
-import ru.belous.AutoVolumeBoot.enums.State;
 import ru.belous.AutoVolumeBoot.repositories.PeopleRepo;
+import ru.belous.AutoVolumeBoot.security.PersonDetails;
 
-import java.util.Date;
-import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
-public class PeopleService {
+public class PeopleService implements UserDetailsService {
     private final PeopleRepo peopleRepo;
 
     @Autowired
@@ -20,35 +20,12 @@ public class PeopleService {
         this.peopleRepo = peopleRepo;
     }
 
-    public List<Person> findAll(){
-        return peopleRepo.findAll();
-    }
 
-    public Person findOne(int id){
-        return peopleRepo.findById(id).orElse(null);
-    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Person> person = peopleRepo.findByUsername(username);
+        if(person.isEmpty()) throw new UsernameNotFoundException("not user");
 
-    @Transactional
-    public void save(Person person){
-        person.setCreatedAt(new Date());
-        int i = (int) (Math.random() *3);
-        System.out.println(i);
-        if(i==1) {
-            person.setState(State.RICH);
-        }else{
-            person.setState(State.AVERAGE);
-        }
-        peopleRepo.save(person);
-    }
-
-    @Transactional
-    public void update(int id, Person updatePerson){
-        updatePerson.setId(id);
-        peopleRepo.save(updatePerson);
-    }
-
-    @Transactional
-    public void delete(int id){
-        peopleRepo.deleteById(id);
+        return new PersonDetails(person.get());
     }
 }

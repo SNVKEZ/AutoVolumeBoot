@@ -1,117 +1,67 @@
 package ru.belous.AutoVolumeBoot.entities;
 
-
-import org.springframework.format.annotation.DateTimeFormat;
-import ru.belous.AutoVolumeBoot.enums.State;
-
 import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.util.Date;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "person")
 public class Person {
 
-    @Id
-    //@OneToMany
     @Column(name = "id")
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
-    @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
-    @Pattern(message = "Bad formed person name: ${validatedValue}",
-            regexp = "[А-Я][а-я]+")
-    private String name;
+    @Column(name = "username")
+    @NotEmpty(message = "не пустое")
+    @Size(min = 2,max = 50,message = "от 2 до 50 символов")
+    private String username;
 
-    @Column(name = "email")
-    @NotEmpty(message = "Email should not be empty")
-    @Email(message = "Email should be valid")
-    private String email;
+    @Column(name = "year_of_birth")
+    @Min(value = 1900,message = "не меньше 1900 года")
+    private int yearOfBirth;
 
-    @Column(name = "age")
-    @Min(value = 18, message = "Age should be greater than 18")
-    @Digits(integer=2, fraction=0, message = "Не более 2-х знаков")
-    @Positive
-    @NotNull
-    private int age;
-
-    @Column(name = "date_of_birth")
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date dateOfBirth;
-
-
-    @Column(name="created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
-    @Column(name = "states")
-    @Enumerated(EnumType.ORDINAL)
-    private State state;
+    @Column(name = "password")
+    private String password;
 
     public Person(){}
 
-    public Person(String name, String email, int age) {
-        this.name = name;
-        this.email = email;
-        this.age = age;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Person(String username, int yearOfBirth) {
+        this.username = username;
+        this.yearOfBirth = yearOfBirth;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getUsername() {
+        return username;
     }
 
-    public String getEmail() {
-        return email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public int getYearOfBirth() {
+        return yearOfBirth;
     }
 
-    public int getAge() {
-        return age;
+    public void setYearOfBirth(int yearOfBirth) {
+        this.yearOfBirth = yearOfBirth;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public String getPassword() {
+        return password;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
