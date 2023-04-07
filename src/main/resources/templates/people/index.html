@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Index</title>
+  <link rel="shortcut icon" href="/static/img/icon.ico" th:href="@{/img/icon.ico}" type="image/x-icon">
+  <link rel="stylesheet" href="/static/css/indexPage.css" th:href="@{/css/indexPage.css}" type="text/css"/>
+</head>
+
+<body th:style="'background-image:url(' + @{/img/startImage.jpg} + '); background-repeat: no-repeat, repeat; background-size: 100%;'">
+
+<div th:each="person : ${people}">
+
+
+  <a class="btn" th:href="@{/people/{id}(id=${person.getId()})}"
+     th:text="${person.getName() + ', ' + person.getAge()}">
+    <span>user</span>
+  </a>
+
+</div>
+
+<br/>
+<hr/>
+
+<form th:method="GET" th:action="@{/people/new}">
+  <input type="submit" value="Create new person"/>
+</form>
+
+</body>
+</html>

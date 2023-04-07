@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Вход</title>
+  <link rel="stylesheet" href="/static/css/firstPage.css" th:href="@{/css/firstPage.css}" type="text/css"/>
+  <link rel="shortcut icon" href="/static/img/icon.ico" th:href="@{/img/icon.ico}" type="image/x-icon">
+</head>
+
+<body th:style="'background-image:url(' + @{/img/startImage.jpg} + '); background-repeat: no-repeat, repeat; background-size: 100%;'">
+<div class="buttonRight">
+  <form action="logonPage" target="_self" class="buttonRight">
+    <button>Войти</button>
+  </form>
+  <form action="logonPage" target="_self" class="buttonRight">
+    <button>Зарегистрироваться</button>
+  </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="stylesheet" href="/static/css/styleLogin.css" th:href="@{/css/styleLogin.css}" type="text/css"/>
+    <link rel="shortcut icon" href="/static/img/icon.ico" th:href="@{/img/icon.ico}" type="image/x-icon">
+</head>
+
+<body th:style="'background-image:url(' + @{/img/startImage.jpg} + '); background-repeat: no-repeat, repeat; background-size: 100%;'">
+
+<div class="txt-logo">
+    <span class="span-txt-logo">Пожалуйста войдите в систему</span>
+</div>
+
+<form name="logon">
+    <p ><b class="label">Логин</b><br>
+        <input id="login" type="text" size="40">
+    </p>
+    <p><b class="label">Пароль</b><br>
+        <input id="password" type="password" size="40">
+    </p>
+    <button>Войти</button>
+    <button>Зарегистрироваться </button>
+</form>
+
+
+</div>
+</body>
+</html>
