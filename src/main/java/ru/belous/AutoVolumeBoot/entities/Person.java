@@ -64,4 +64,11 @@ public class Person {
     public void setPassword(String password) {
         this.password = password;
     }
+    @Override
+    public String toString(){
+        return "id"+id+"\n"+
+                "username"+username+"\n"+
+                "pass"+password+"\n"+
+                "date"+yearOfBirth;
+    }
 }
