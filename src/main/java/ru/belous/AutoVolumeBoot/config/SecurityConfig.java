@@ -8,18 +8,27 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import ru.belous.AutoVolumeBoot.security.AuthProviderImpl;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.belous.AutoVolumeBoot.services.PeopleService;
 
 @EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig{
 
-    private final AuthProviderImpl authProvider;
+    /*private final AuthProviderImpl authProvider;
 
     @Autowired
     public SecurityConfig(AuthProviderImpl authProvider) {
         this.authProvider = authProvider;
+    }*/
+
+    private final PeopleService peopleService;
+
+    @Autowired
+    public SecurityConfig(PeopleService peopleService) {
+        this.peopleService = peopleService;
     }
 
     @Bean
@@ -29,7 +38,12 @@ public class SecurityConfig{
     }
 
     @Autowired
-    void registerProvider(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authProvider);
+    void registerProvider(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(peopleService);
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder(){
+        return NoOpPasswordEncoder.getInstance();
     }
 }
