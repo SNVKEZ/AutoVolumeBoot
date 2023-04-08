@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="shortcut icon" href="/static/img/icon.ico" th:href="@{/img/icon.ico}" type="image/x-icon">
+    <link rel="stylesheet" href="/static/css/styleLogin.css" th:href="@{/css/styleLogin.css}" type="text/css"/>
+</head>
+<body th:style="'background-image:url(' + @{/img/startImage.jpg} + '); background-repeat: no-repeat, repeat; background-size: 100%;'">
+
+<form class="forms" method="post" action="/process_login">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+  <label for="username">Введите имя пользователя: </label>
+  <input type="text" name="username" id="username"/>
+  <br/>
+  <label for="password">Введите пароль: </label>
+  <input type="password" name="password" id="password"/>
+  <br/>
+  <input type="submit" value="Login"/>
+
+  <div th:if="${param.error}" style="color: red">
+    Неправильные имя или пароль
+  </div>
+</form>
+
+</body>
+</html>
