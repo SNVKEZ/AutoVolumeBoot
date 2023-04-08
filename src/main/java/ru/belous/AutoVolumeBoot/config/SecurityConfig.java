@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.belous.AutoVolumeBoot.services.PeopleService;
+import ru.belous.AutoVolumeBoot.services.PersonService;
 
 @EnableWebSecurity
 @Configuration
@@ -27,11 +27,11 @@ public class SecurityConfig{
         this.authProvider = authProvider;
     }*/
 
-    private final PeopleService peopleService;
+    private final PersonService personService;
 
     @Autowired
-    public SecurityConfig(PeopleService peopleService) {
-        this.peopleService = peopleService;
+    public SecurityConfig(PersonService personService) {
+        this.personService = personService;
     }
 
     @Bean
@@ -42,7 +42,7 @@ public class SecurityConfig{
 
     @Autowired
     void registerProvider(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(peopleService);
+        auth.userDetailsService(personService);
     }
 
     @Bean
@@ -54,14 +54,15 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests()
-                .antMatchers("/auth/login","error")
+                .antMatchers("/auth/login","error","/auth/registration")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
                 .defaultSuccessUrl("/showinfo",true)
-                .failureForwardUrl("/auth/login?error");
+                .failureForwardUrl("/auth/login?error")
+                ;
         return http.build();
     }
 

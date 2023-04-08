@@ -8,23 +8,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import ru.belous.AutoVolumeBoot.services.PeopleService;
+import ru.belous.AutoVolumeBoot.services.PersonService;
 
 import java.util.Collections;
 
 @Component
 public class AuthProviderImpl implements AuthenticationProvider {
-    private final PeopleService peopleService;
+    private final PersonService personService;
 
     @Autowired
-    public AuthProviderImpl(PeopleService peopleService) {
-        this.peopleService = peopleService;
+    public AuthProviderImpl(PersonService personService) {
+        this.personService = personService;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
-        UserDetails userDetails = peopleService.loadUserByUsername(username);
+        UserDetails userDetails = personService.loadUserByUsername(username);
         String pass = authentication.getCredentials().toString();
         if(!pass.equals(userDetails.getPassword())) throw new BadCredentialsException("not right pass");
 

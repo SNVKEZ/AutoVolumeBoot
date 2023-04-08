@@ -12,16 +12,20 @@ import ru.belous.AutoVolumeBoot.security.PersonDetails;
 import java.util.Optional;
 
 @Service
-public class PeopleService implements UserDetailsService {
+public class PersonService implements UserDetailsService {
     private final PeopleRepo peopleRepo;
 
     @Autowired
-    public PeopleService(PeopleRepo peopleRepo) {
+    public PersonService(PeopleRepo peopleRepo) {
         this.peopleRepo = peopleRepo;
     }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Person> person = peopleRepo.findByUsername(username);
-        return new PersonDetails(person.orElse(null));
+        if(person.isEmpty()) throw new UsernameNotFoundException("not user");
+
+        return new PersonDetails(person.get());
     }
 }
