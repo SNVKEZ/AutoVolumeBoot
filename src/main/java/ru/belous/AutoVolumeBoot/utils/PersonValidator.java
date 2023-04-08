@@ -6,21 +6,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.belous.AutoVolumeBoot.entities.Person;
+import ru.belous.AutoVolumeBoot.services.PeopleService;
 import ru.belous.AutoVolumeBoot.services.PersonService;
 
 @Component
 public class PersonValidator implements Validator {
-    private final PersonService peopleService;
+    private final PeopleService peopleService;
 
-    @Autowired
+    /*@Autowired
     public PersonValidator(PersonService peopleService) {
         this.peopleService = peopleService;
     }
-
-    /*@Autowired
+*/
+    @Autowired
     public PersonValidator(PeopleService peopleService) {
         this.peopleService = peopleService;
-    }*/
+    }
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -32,7 +33,7 @@ public class PersonValidator implements Validator {
         Person person = (Person) target;
         try {
             peopleService.loadUserByUsername(person.getUsername());
-        } catch (UsernameNotFoundException ignored) {
+        } catch (NullPointerException nullPointerException) {
             return;
         }
 
