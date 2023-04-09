@@ -6,17 +6,16 @@
     <link rel="shortcut icon" href="/static/img/icon.ico" th:href="@{/img/icon.ico}" type="image/x-icon">
 </head>
 <body>
-<div></div>
-
-<form th:method="POST" th:action="@{/admin/add}">
+<div>
+<form name="formSelect" th:method="POST" th:action="@{/admin/add}">
     <label for="person">Выберите админа</label>
     <select th:object="${person}" th:field="*{id}" id="person">
         <option th:each="person : ${people}" th:value="${person.getId()}"
-                th:text="${person.getName()}"></option>
+                th:text="${person.getUsername()}"></option>
     </select>
 
     <input type="submit" value="Назначить админа"/>
 </form>
-
+</div>
 </body>
 </html>
