@@ -51,7 +51,6 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/auth/login","/error","/auth/registration","/hello")
                 .permitAll()
                 .anyRequest().hasAnyRole("USER","ADMIN")

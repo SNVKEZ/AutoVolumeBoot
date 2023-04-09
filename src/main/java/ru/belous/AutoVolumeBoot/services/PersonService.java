@@ -1,6 +1,7 @@
 package ru.belous.AutoVolumeBoot.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +28,7 @@ public class PersonService implements UserDetailsService {
 
         return new PersonDetails(person.get());
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public void setAdmin(int id){
         Person person = peopleRepo.findById(id).orElse(null);
