@@ -10,12 +10,19 @@
 </head>
 
 <body th:style="'background-image:url(' + @{/img/startImage.jpg} + '); background-repeat: no-repeat, repeat; background-size: 100%;'">
+
 <div class="buttonRight">
   <form action="logonPage" target="_self" class="buttonRight">
     <button>Войти</button>
   </form>
   <form action="logonPage" target="_self" class="buttonRight">
     <button>Зарегистрироваться</button>
+  </form>
+</div>
+
+<div>
+  <form method="get" action="/logout">
+    <input type="submit" value="Log out">
   </form>
 </div>
 

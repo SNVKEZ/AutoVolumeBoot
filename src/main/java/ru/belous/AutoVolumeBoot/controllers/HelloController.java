@@ -10,7 +10,7 @@ import ru.belous.AutoVolumeBoot.security.PersonDetails;
 public class HelloController {
     @GetMapping("/hello")
     public String hello(){
-        return "firstPage";
+        return "hello";
     }
 
     @GetMapping("/showinfo")

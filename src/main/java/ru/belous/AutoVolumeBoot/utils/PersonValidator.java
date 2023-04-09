@@ -6,20 +6,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.belous.AutoVolumeBoot.entities.Person;
-import ru.belous.AutoVolumeBoot.services.PeopleService;
 import ru.belous.AutoVolumeBoot.services.PersonService;
 
 @Component
 public class PersonValidator implements Validator {
-    private final PeopleService peopleService;
-
-    /*@Autowired
-    public PersonValidator(PersonService peopleService) {
-        this.peopleService = peopleService;
-    }
-*/
+    private final PersonService peopleService;
     @Autowired
-    public PersonValidator(PeopleService peopleService) {
+    public PersonValidator(PersonService peopleService) {
         this.peopleService = peopleService;
     }
 
@@ -33,10 +26,9 @@ public class PersonValidator implements Validator {
         Person person = (Person) target;
         try {
             peopleService.loadUserByUsername(person.getUsername());
-        } catch (NullPointerException nullPointerException) {
+        } catch (UsernameNotFoundException ignored) {
             return;
         }
-
         errors.rejectValue("username","","есть такой");
     }
 }
