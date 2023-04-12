@@ -46,4 +46,9 @@ public class PersonService implements UserDetailsService {
         Optional<Person> person = peopleRepo.findById(id);
         return person.orElseThrow(PersonNotFoundException::new);
     }
+
+    @Transactional
+    public void save(Person person){
+        peopleRepo.save(person);
+    }
 }
