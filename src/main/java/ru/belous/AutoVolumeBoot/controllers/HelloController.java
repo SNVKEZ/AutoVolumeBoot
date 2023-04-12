@@ -56,13 +56,13 @@ public class HelloController {
         return personService.showAll();
     }
     @ResponseBody
-    @ExceptionHandler
     @GetMapping("/api/peolpe/{id}")
     public Person showPerson(@PathVariable("id") int id){
         return personService.showOne(id);
     }
 
     @ExceptionHandler
+    @ResponseBody
     private ResponseEntity<PersonErrorResponse> handlerException(PersonNotFoundException e){
         PersonErrorResponse response = new PersonErrorResponse(
                 "Data not found",
