@@ -54,13 +54,16 @@ public class SecurityConfig{
                 .antMatchers("/auth/login","/error","/auth/registration","/hello")
                 .permitAll()
                 .anyRequest().hasAnyRole("USER","ADMIN")
+
                 .and()
                 .httpBasic()
+
                 .and()
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
                 .defaultSuccessUrl("/showinfo",true)
                 .failureForwardUrl("/auth/login?error")
+
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

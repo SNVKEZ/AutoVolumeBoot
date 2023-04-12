@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.belous.AutoVolumeBoot.entities.Person;
+import ru.belous.AutoVolumeBoot.exceptions.PersonNotFoundException;
 import ru.belous.AutoVolumeBoot.repositories.PeopleRepo;
 import ru.belous.AutoVolumeBoot.security.PersonDetails;
 
@@ -36,7 +37,13 @@ public class PersonService implements UserDetailsService {
         peopleRepo.save(person);
     }
     @Transactional
-    public List<Person> show(){
+    public List<Person> showAll(){
        return peopleRepo.findAll();
+    }
+
+    @Transactional
+    public Person showOne(int id){
+        Optional<Person> person = peopleRepo.findById(id);
+        return person.orElseThrow(PersonNotFoundException::new);
     }
 }
