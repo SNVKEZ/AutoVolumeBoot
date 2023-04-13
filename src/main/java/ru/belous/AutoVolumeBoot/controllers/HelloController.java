@@ -3,8 +3,8 @@ package ru.belous.AutoVolumeBoot.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.belous.AutoVolumeBoot.entities.Person;
 import ru.belous.AutoVolumeBoot.exceptions.NotValidDataPerson;
 import ru.belous.AutoVolumeBoot.exceptions.PersonNotFoundException;
-import ru.belous.AutoVolumeBoot.security.PersonDetails;
+//import ru.belous.AutoVolumeBoot.security.PersonDetails;
 import ru.belous.AutoVolumeBoot.services.PersonService;
 import ru.belous.AutoVolumeBoot.utils.PersonErrorResponse;
 
@@ -35,12 +35,12 @@ public class HelloController {
         return "hello";
     }
 
-    @GetMapping("/showinfo")
-    public String showInfo(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PersonDetails personDetails = (PersonDetails)authentication.getPrincipal();
-        return "firstPage";
-    }
+//    @GetMapping("/showinfo")
+//    public String showInfo(){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        PersonDetails personDetails = (PersonDetails)authentication.getPrincipal();
+//        return "firstPage";
+//    }
 
     @ResponseBody
     @GetMapping("/api")
