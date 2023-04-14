@@ -12,10 +12,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.belous.AutoVolumeBoot.services.PersonService;
 
@@ -33,10 +35,12 @@ public class SecurityConfig{
     }*/
 
     private final PersonService personService;
+    private final JWTFilter jwtFilter;
 
     @Autowired
-    public SecurityConfig(PersonService personService) {
+    public SecurityConfig(PersonService personService, JWTFilter jwtFilter) {
         this.personService = personService;
+        this.jwtFilter = jwtFilter;
     }
 
     @Bean
@@ -48,8 +52,11 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .authorizeRequests()
-                .antMatchers("/auth/login","/error","/auth/registration","/hello","/newPerson","/api/people")
+                .antMatchers("/auth/login","/error","/auth/registration","/hello","/newPerson","/api/people","/showinfo")
                 .permitAll()
                 .anyRequest().hasAnyRole("USER","ADMIN")
 
@@ -65,7 +72,15 @@ public class SecurityConfig{
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/hello").deleteCookies("remember-me").permitAll();
+                .logoutSuccessUrl("/hello").deleteCookies("remember-me").permitAll()
+
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                ;
+
+
 
         return http.build();
     }
@@ -74,7 +89,7 @@ public class SecurityConfig{
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder);
+                .passwordEncoder(encoder());
         return authenticationManagerBuilder.build();
     }
 

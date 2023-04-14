@@ -36,10 +36,11 @@ public class HelloController {
     }
 
     @GetMapping("/showinfo")
+    @ResponseBody
     public String showInfo(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PersonDetails personDetails = (PersonDetails)authentication.getPrincipal();
-        return "firstPage";
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+        return personDetails.getUsername();
     }
 
     @ResponseBody
