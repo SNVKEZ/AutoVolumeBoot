@@ -1,10 +1,13 @@
 package ru.belous.AutoVolumeBoot.entities;
 
+import org.springframework.data.annotation.CreatedBy;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "person")
@@ -30,6 +33,16 @@ public class Person {
 
     @Column(name = "role")
     private String role;
+
+    @Column(name = "created_ad")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_ad")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "created_who")
+    @NotEmpty
+    private String createdWho;
 
     public Person(){}
 
@@ -77,6 +90,30 @@ public class Person {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getCreatedWho() {
+        return createdWho;
+    }
+
+    public void setCreatedWho(String createdWho) {
+        this.createdWho = createdWho;
     }
 
     @Override
