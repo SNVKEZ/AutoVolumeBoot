@@ -89,7 +89,7 @@ public class SecurityConfig{
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailsService)
-                .passwordEncoder(encoder());
+                .passwordEncoder(bCryptPasswordEncoder);
         return authenticationManagerBuilder.build();
     }
 
