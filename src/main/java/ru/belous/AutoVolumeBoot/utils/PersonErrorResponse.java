@@ -1,10 +1,12 @@
 package ru.belous.AutoVolumeBoot.utils;
 
+import java.util.Date;
+
 public class PersonErrorResponse {
     private String message;
-    private long timestamp;
+    private String timestamp;
 
-    public PersonErrorResponse(String message, long timestamp) {
+    public PersonErrorResponse(String message, String timestamp) {
         this.message = message;
         this.timestamp = timestamp;
     }
@@ -17,11 +19,11 @@ public class PersonErrorResponse {
         this.message = message;
     }
 
-    public long getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }
