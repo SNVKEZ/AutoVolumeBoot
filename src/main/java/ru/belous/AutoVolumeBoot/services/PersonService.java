@@ -8,22 +8,28 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.belous.AutoVolumeBoot.dtos.AutoDTO;
 import ru.belous.AutoVolumeBoot.dtos.PersonDTO;
+import ru.belous.AutoVolumeBoot.entities.Auto;
 import ru.belous.AutoVolumeBoot.entities.Person;
 import ru.belous.AutoVolumeBoot.repositories.PeopleRepo;
 import ru.belous.AutoVolumeBoot.security.PersonDetails;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class PersonService implements UserDetailsService {
     private final PeopleRepo peopleRepo;
     private final ModelMapper modelMapper;
+    private final AutoService autoService;
     @Autowired
-    public PersonService(PeopleRepo peopleRepo, ModelMapper modelMapper) {
+    public PersonService(PeopleRepo peopleRepo, ModelMapper modelMapper, AutoService autoService) {
         this.peopleRepo = peopleRepo;
         this.modelMapper = modelMapper;
+        this.autoService = autoService;
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,6 +60,17 @@ public class PersonService implements UserDetailsService {
     @Transactional
     public void save(Person person){
         peopleRepo.save(person);
+    }
+
+    @Transactional
+    public List<AutoDTO> showPersonCars(int id){
+        Person person = peopleRepo.findById(id).orElse(null);
+        List<Auto> listAuto= Objects.requireNonNull(person).getAutos();
+        List<AutoDTO> listAutoDTO = new ArrayList<>();
+        for(Auto value : listAuto){
+            listAutoDTO.add(autoService.convertToAutoDTO(value));
+        }
+        return listAutoDTO;
     }
 
     private PersonDTO convertToPersonDTO(Person person){

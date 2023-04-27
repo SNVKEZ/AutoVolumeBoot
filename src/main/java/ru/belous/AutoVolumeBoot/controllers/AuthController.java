@@ -37,17 +37,6 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
-//    @GetMapping("/login")
-//    public String loginPage(){
-//        return "auth/login";
-//    }
-//
-//
-//    @GetMapping("/registration")
-//    public String registrationPage(@ModelAttribute("person")Person person){
-//        return "auth/registration";
-//    }
-
     @PostMapping("/registration")
     public Map<String,String> performReg(@RequestBody @Valid PersonDTO personDTO,
                                          BindingResult bindingResult){

@@ -63,7 +63,8 @@ public class HelloController {
     }
     @ResponseBody
     @GetMapping("/api/people/person")
-    public PersonDTO showPerson(@RequestParam("id") int id){
+    public PersonDTO showPerson(
+            @RequestParam("id") int id){
         try {
             personService.showOneDTO(id);
         }catch (IllegalArgumentException e){

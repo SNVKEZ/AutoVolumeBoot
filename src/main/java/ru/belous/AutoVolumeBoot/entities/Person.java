@@ -1,10 +1,10 @@
 package ru.belous.AutoVolumeBoot.entities;
 
+import org.hibernate.validator.constraints.CreditCardNumber;
+
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.util.List;
 
 @Entity
 @Table(name = "person")
@@ -17,7 +17,8 @@ public class Person {
 
     @Column(name = "username")
     @NotEmpty(message = "не пустое")
-    @Size(min = 2,max = 50,message = "от 2 до 50 символов")
+    @Size(min = 4,max = 50,message = "от 2 до 50 символов")
+    @NotNull
     private String username;
 
     @Column(name = "year_of_birth")
@@ -27,6 +28,9 @@ public class Person {
 
     @Column(name = "password")
     private String password;
+    
+    @OneToMany(mappedBy = "owner")
+    private List<Auto> autos;
 
     @Column(name = "role")
     private String role;
@@ -77,6 +81,14 @@ public class Person {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Auto> getAutos() {
+        return autos;
+    }
+
+    public void setAutos(List<Auto> autos) {
+        this.autos = autos;
     }
 
     @Override
