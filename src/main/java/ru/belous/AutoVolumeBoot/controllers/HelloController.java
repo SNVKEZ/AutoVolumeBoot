@@ -12,8 +12,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.belous.AutoVolumeBoot.dtos.PersonDTO;
 import ru.belous.AutoVolumeBoot.entities.Person;
+import ru.belous.AutoVolumeBoot.exceptions.DataNotFoundException;
 import ru.belous.AutoVolumeBoot.exceptions.NotValidDataPerson;
-import ru.belous.AutoVolumeBoot.exceptions.PersonNotFoundException;
 import ru.belous.AutoVolumeBoot.security.PersonDetails;
 import ru.belous.AutoVolumeBoot.services.PersonService;
 import ru.belous.AutoVolumeBoot.utils.PersonErrorResponse;
@@ -68,14 +68,14 @@ public class HelloController {
         try {
             personService.showOneDTO(id);
         }catch (IllegalArgumentException e){
-            throw new PersonNotFoundException();
+            throw new DataNotFoundException();
         }
         return personService.showOneDTO(id);
     }
 
     @ResponseBody
     @ExceptionHandler
-    private ResponseEntity<PersonErrorResponse> handlerException(PersonNotFoundException e){
+    private ResponseEntity<PersonErrorResponse> handlerException(DataNotFoundException e){
         PersonErrorResponse response = new PersonErrorResponse(
                 "Data not found",
                 formatForDateNow.format(new Date())

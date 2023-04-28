@@ -63,8 +63,8 @@ public class PersonService implements UserDetailsService {
     }
 
     @Transactional
-    public List<AutoDTO> showPersonCars(int id){
-        Person person = peopleRepo.findById(id).orElse(null);
+    public List<AutoDTO> showPersonCars(String username){
+        Person person = peopleRepo.findByUsername(username).orElse(null);
         List<Auto> listAuto= Objects.requireNonNull(person).getAutos();
         List<AutoDTO> listAutoDTO = new ArrayList<>();
         for(Auto value : listAuto){
