@@ -29,7 +29,7 @@ public class Person {
     @Column(name = "password")
     private String password;
     
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Auto> autos;
 
     @Column(name = "role")

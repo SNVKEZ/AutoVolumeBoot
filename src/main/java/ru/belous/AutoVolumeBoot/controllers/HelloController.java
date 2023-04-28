@@ -62,9 +62,9 @@ public class HelloController {
         return personService.showAll();
     }
     @ResponseBody
-    @GetMapping("/api/people/person")
+    @GetMapping("/api/people/person/{id}")
     public PersonDTO showPerson(
-            @RequestParam("id") int id){
+            @PathVariable("id") int id){
         try {
             personService.showOneDTO(id);
         }catch (IllegalArgumentException e){

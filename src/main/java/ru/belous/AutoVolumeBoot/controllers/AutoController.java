@@ -43,4 +43,10 @@ public class AutoController {
     public List<AutoDTO> showAutoForPerson(@RequestParam("id") int id){
         return personService.showPersonCars(id);
     }
+
+    @DeleteMapping("/auto/delete/{id}")
+    public ResponseEntity<HttpStatus> deleteAutoById(@PathVariable("id") int id){
+        autoService.deleteAutoById(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }

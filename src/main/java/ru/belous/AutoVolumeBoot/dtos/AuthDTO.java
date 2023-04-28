@@ -1,12 +1,16 @@
 package ru.belous.AutoVolumeBoot.dtos;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class AuthDTO {
     @NotEmpty(message = "не пустое")
     @Size(min = 2,max = 50,message = "от 2 до 50 символов")
     private String username;
+
+
     private String password;
 
     public String getUsername() {

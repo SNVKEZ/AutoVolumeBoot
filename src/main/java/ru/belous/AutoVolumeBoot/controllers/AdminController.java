@@ -19,6 +19,7 @@ public class AdminController {
     }
 
     @GetMapping()
+
     public String adminPage(Model model, @ModelAttribute("person") Person person){
         model.addAttribute("people",personService.showAll());
         return "admins/adminPage";

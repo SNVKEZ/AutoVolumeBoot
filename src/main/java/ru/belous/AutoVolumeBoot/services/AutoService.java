@@ -46,11 +46,10 @@ public class AutoService {
         return convertToAutoDTO(autoRepo.findById(id).orElse(null));
     }
 
-//    @Transactional
-//    public AutoDTO showOne(int id){
-//        return convertToAutoDTO(autoRepo.findByPersonId(id));
-//    }
-
+    @Transactional
+    public void deleteAutoById(int id){
+        autoRepo.deleteById(id);
+    }
     public AutoDTO convertToAutoDTO(Auto auto){
         return this.modelMapper.map(auto, AutoDTO.class);
     }
