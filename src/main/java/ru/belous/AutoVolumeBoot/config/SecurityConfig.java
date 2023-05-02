@@ -26,14 +26,6 @@ import ru.belous.AutoVolumeBoot.services.PersonService;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig{
-
-    /*private final AuthProviderImpl authProvider;
-
-    @Autowired
-    public SecurityConfig(AuthProviderImpl authProvider) {
-        this.authProvider = authProvider;
-    }*/
-
     private final PersonService personService;
     private final JWTFilter jwtFilter;
 
