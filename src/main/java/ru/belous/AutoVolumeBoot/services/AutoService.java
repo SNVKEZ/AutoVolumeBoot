@@ -50,6 +50,12 @@ public class AutoService {
     public void deleteAutoById(int id){
         autoRepo.deleteById(id);
     }
+
+    @Transactional
+    public void addAutoForPersonByUsername(Auto auto,String username){
+        auto.setOwner(peopleRepo.findByUsername(username).orElse(null));
+        autoRepo.save(auto);
+    }
     public AutoDTO convertToAutoDTO(Auto auto){
         return this.modelMapper.map(auto, AutoDTO.class);
     }

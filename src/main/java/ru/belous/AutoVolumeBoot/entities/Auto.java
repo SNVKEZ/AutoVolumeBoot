@@ -28,7 +28,6 @@ public class Auto {
 
     @ManyToOne
     @JoinColumn(name = "person_id",referencedColumnName = "id")
-    @NotNull
     private Person owner;
 
     public Auto() {

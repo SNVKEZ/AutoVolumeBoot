@@ -49,6 +49,13 @@ public class AutoController {
         return personService.showPersonCars(username);
     }
 
+    @PostMapping("/person/{username}/auto/add")
+    public ResponseEntity<HttpStatus> addAutoForPersonById(@PathVariable("username") String username,
+                                     @RequestBody @Valid Auto auto){
+        autoService.addAutoForPersonByUsername(auto,username);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @DeleteMapping("/auto/delete/{id}")
     public ResponseEntity<HttpStatus> deleteAutoById(@PathVariable("id") int id){
 
