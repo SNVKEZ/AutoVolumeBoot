@@ -11,7 +11,6 @@ public class PersonDTO {
 
     @Min(1950)
     @Max(2005)
-    @Size(min = 4,max = 50,message = "от 2 до 50 символов")
     private int yearOfBirth;
 
     private String password;
