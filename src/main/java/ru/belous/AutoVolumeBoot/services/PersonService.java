@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import ru.belous.AutoVolumeBoot.dtos.AutoDTO;
 import ru.belous.AutoVolumeBoot.dtos.PersonDTO;
 import ru.belous.AutoVolumeBoot.entities.Auto;
@@ -15,12 +16,14 @@ import ru.belous.AutoVolumeBoot.entities.Person;
 import ru.belous.AutoVolumeBoot.repositories.PeopleRepo;
 import ru.belous.AutoVolumeBoot.security.PersonDetails;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Validated
 public class PersonService implements UserDetailsService {
     private final PeopleRepo peopleRepo;
     private final ModelMapper modelMapper;
@@ -58,7 +61,7 @@ public class PersonService implements UserDetailsService {
     }
 
     @Transactional
-    public void save(Person person){
+    public void save(@Valid Person person){
         peopleRepo.save(person);
     }
 
@@ -71,6 +74,11 @@ public class PersonService implements UserDetailsService {
             listAutoDTO.add(autoService.convertToAutoDTO(value));
         }
         return listAutoDTO;
+    }
+
+    @Transactional
+    public void deletePersonByUsername(String username){
+        peopleRepo.delete(Objects.requireNonNull(peopleRepo.findByUsername(username).orElse(null)));
     }
 
     private PersonDTO convertToPersonDTO(Person person){

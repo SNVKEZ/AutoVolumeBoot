@@ -1,6 +1,7 @@
 package ru.belous.AutoVolumeBoot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,18 +57,29 @@ public class AutoController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @DeleteMapping("/person/{username}/delete")
+    public ResponseEntity<HttpStatus> deletePersonByUsername(@PathVariable("username") String username){
+        personService.deletePersonByUsername(username);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PatchMapping("/auto/{id}/color/change")
+    public ResponseEntity<HttpStatus> changeColorAuto(@PathVariable("id") int id,
+                                                      @RequestParam("color") String color){
+        autoService.changeColorAutoById(id,color);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @DeleteMapping("/auto/delete/{id}")
     public ResponseEntity<HttpStatus> deleteAutoById(@PathVariable("id") int id){
-
         try {
             autoService.deleteAutoById(id);
-        }catch (Exception e){
+        }catch (EmptyResultDataAccessException e){
             throw new DataNotFoundException();
         }
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @ResponseBody
     @ExceptionHandler
     private ResponseEntity<PersonErrorResponse> handlerException(DataNotFoundException e){
         PersonErrorResponse response = new PersonErrorResponse(

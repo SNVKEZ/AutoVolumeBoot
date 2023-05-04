@@ -22,8 +22,8 @@ public class Person {
     private String username;
 
     @Column(name = "year_of_birth")
-    @Min(value = 1950,message = "Год рождения не меньше 1950")
-    @Max(value = 2005,message = "Год рождения не больше 2005")
+    @Min(1950)
+    @Max(2005)
     private int yearOfBirth;
 
     @Column(name = "password")

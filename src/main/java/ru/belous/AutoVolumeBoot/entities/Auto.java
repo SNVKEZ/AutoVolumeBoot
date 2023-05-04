@@ -26,6 +26,10 @@ public class Auto {
     @Pattern(regexp = "[1-2][09][0-9][0-9]")
     private String yearOfIssue;
 
+    @Column(name = "color")
+    @NotNull
+    private String color;
+
     @ManyToOne
     @JoinColumn(name = "person_id",referencedColumnName = "id")
     private Person owner;
@@ -79,5 +83,13 @@ public class Auto {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

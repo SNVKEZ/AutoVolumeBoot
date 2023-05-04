@@ -9,8 +9,9 @@ public class PersonDTO {
     @Size(min = 4,max = 50,message = "от 2 до 50 символов")
     private String username;
 
-    @Min(value = 1950,message = "Год рождения не меньше 1950")
-    @Max(value = 2005,message = "Год рождения не больше 2005")
+    @Min(1950)
+    @Max(2005)
+    @Size(min = 4,max = 50,message = "от 2 до 50 символов")
     private int yearOfBirth;
 
     private String password;

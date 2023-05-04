@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.belous.AutoVolumeBoot.dtos.AuthDTO;
 import ru.belous.AutoVolumeBoot.dtos.PersonDTO;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@Validated
 public class AuthController {
 
     private final PersonValidator personValidator;
@@ -38,11 +40,11 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public Map<String,String> performReg(@RequestBody @Valid PersonDTO personDTO,
+    public Map<String,String> performReg(@Valid @RequestBody PersonDTO personDTO,
                                          BindingResult bindingResult){
         Person person = convertToPerson(personDTO);
         personValidator.validate(person,bindingResult);
-        if (bindingResult.hasErrors()) return Map.of("message","operation not run");
+        if (bindingResult.hasErrors()) return Map.of("message","user with this name exists");
 
         registrateService.registration(person);
         String token = jwtUtil.generateToken(person.getUsername());
