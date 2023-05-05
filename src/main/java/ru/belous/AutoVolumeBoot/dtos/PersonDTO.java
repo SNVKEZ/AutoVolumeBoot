@@ -6,11 +6,11 @@ public class PersonDTO {
 
     @NotEmpty(message = "не пустое")
     @NotNull
-    @Size(min = 4,max = 50,message = "от 2 до 50 символов")
+    @Size(min = 4,max = 15,message = "длина логина должана быть от 4 до 15 символов")
     private String username;
 
-    @Min(1950)
-    @Max(2005)
+    @Min(value = 1950, message = "год рождения не меньше 1950")
+    @Max(value = 2005, message = "год рождения не больше 2005")
     private int yearOfBirth;
 
     private String password;

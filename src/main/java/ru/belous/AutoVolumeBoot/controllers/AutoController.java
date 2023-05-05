@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.belous.AutoVolumeBoot.dtos.AutoDTO;
 import ru.belous.AutoVolumeBoot.exceptions.DataNotFoundException;
+import ru.belous.AutoVolumeBoot.exceptions.NotValidDataException;
 import ru.belous.AutoVolumeBoot.services.AutoService;
 import ru.belous.AutoVolumeBoot.entities.Auto;
 import ru.belous.AutoVolumeBoot.services.PersonService;
+import ru.belous.AutoVolumeBoot.utils.CatchThrowOnErrorInBindingResult;
 import ru.belous.AutoVolumeBoot.utils.PersonErrorResponse;
 
 import javax.validation.Valid;
@@ -52,7 +55,9 @@ public class AutoController {
 
     @PostMapping("/person/{username}/auto/add")
     public ResponseEntity<HttpStatus> addAutoForPersonById(@PathVariable("username") String username,
-                                     @RequestBody @Valid Auto auto){
+                                                           @RequestBody @Valid Auto auto,
+                                                           BindingResult bindingResult){
+        new CatchThrowOnErrorInBindingResult().catchNotValidException(bindingResult);
         autoService.addAutoForPersonByUsername(auto,username);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -80,6 +85,7 @@ public class AutoController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @ResponseBody
     @ExceptionHandler
     private ResponseEntity<PersonErrorResponse> handlerException(DataNotFoundException e){
         PersonErrorResponse response = new PersonErrorResponse(
@@ -87,5 +93,14 @@ public class AutoController {
                 formatForDateNow.format(new Date())
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+    @ResponseBody
+    @ExceptionHandler
+    private ResponseEntity<PersonErrorResponse> personException(NotValidDataException e){
+        PersonErrorResponse response = new PersonErrorResponse(
+                e.toString(),
+                formatForDateNow.format(new Date())
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

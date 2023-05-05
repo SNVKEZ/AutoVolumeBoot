@@ -19,11 +19,11 @@ public class AdminController {
     }
 
     @GetMapping()
-
     public String adminPage(Model model, @ModelAttribute("person") Person person){
         model.addAttribute("people",personService.showAll());
         return "admins/adminPage";
     }
+
     @PostMapping("/add")
     public String addAdmin(@ModelAttribute("person") Person person){
         personService.setAdmin(person.getId());

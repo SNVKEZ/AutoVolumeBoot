@@ -1,6 +1,5 @@
 package ru.belous.AutoVolumeBoot.entities;
 
-import org.hibernate.validator.constraints.CreditCardNumber;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -17,13 +16,12 @@ public class Person {
 
     @Column(name = "username")
     @NotEmpty(message = "не пустое")
-    @Size(min = 4,max = 50,message = "от 2 до 50 символов")
-    @NotNull
+    @Size(min = 4,max = 15,message = "длина логина должана быть от 4 до 15 символов")
     private String username;
 
     @Column(name = "year_of_birth")
-    @Min(1950)
-    @Max(2005)
+    @Min(value = 1950, message = "год рождения не меньше 1950")
+    @Max(value = 2005, message = "год рождения не больше 2005")
     private int yearOfBirth;
 
     @Column(name = "password")

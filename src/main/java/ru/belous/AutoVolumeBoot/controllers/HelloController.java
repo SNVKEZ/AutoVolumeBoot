@@ -8,14 +8,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.belous.AutoVolumeBoot.dtos.PersonDTO;
 import ru.belous.AutoVolumeBoot.entities.Person;
 import ru.belous.AutoVolumeBoot.exceptions.DataNotFoundException;
-import ru.belous.AutoVolumeBoot.exceptions.NotValidDataPerson;
+import ru.belous.AutoVolumeBoot.exceptions.NotValidDataException;
 import ru.belous.AutoVolumeBoot.security.PersonDetails;
 import ru.belous.AutoVolumeBoot.services.PersonService;
+import ru.belous.AutoVolumeBoot.utils.CatchThrowOnErrorInBindingResult;
 import ru.belous.AutoVolumeBoot.utils.PersonErrorResponse;
 
 import javax.validation.Valid;
@@ -58,7 +58,6 @@ public class HelloController {
     @ResponseBody
     @GetMapping("/api/people")
     public List<Person> showPeople(){
-
         return personService.showAll();
     }
     @ResponseBody
@@ -73,6 +72,14 @@ public class HelloController {
         return personService.showOneDTO(id);
     }
 
+    @PostMapping("/newPerson")
+    public ResponseEntity<HttpStatus> newPerson(@RequestBody @Valid Person person,
+                                                BindingResult bindingResult){
+        new CatchThrowOnErrorInBindingResult().catchNotValidException(bindingResult);
+        personService.save(person);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @ResponseBody
     @ExceptionHandler
     private ResponseEntity<PersonErrorResponse> handlerException(DataNotFoundException e){
@@ -85,31 +92,15 @@ public class HelloController {
 
     @ResponseBody
     @ExceptionHandler
-    private ResponseEntity<PersonErrorResponse> personException(NotValidDataPerson e){
+    private ResponseEntity<PersonErrorResponse> personException(NotValidDataException e){
         PersonErrorResponse response = new PersonErrorResponse(
-                "Not valid data",
+                e.toString(),
                 formatForDateNow.format(new Date())
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/newPerson")
-    public ResponseEntity<HttpStatus> newPerson(@RequestBody @Valid Person person,
-                                                BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            StringBuilder eror = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError erorr : errors){
-                eror.append(erorr.getField()).append("-").append(erorr.getDefaultMessage())
-                        .append(";");
-            }
 
-            throw new NotValidDataPerson(eror.toString());
-        }
-
-        personService.save(person);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
 
 
 }
