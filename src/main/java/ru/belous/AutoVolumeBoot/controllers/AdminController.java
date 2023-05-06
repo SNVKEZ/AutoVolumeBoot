@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminController {
+public class AdminController extends ExceptionHandlerController {
 
     private final PersonService personService;
 
@@ -21,13 +21,13 @@ public class AdminController {
         this.personService = personService;
     }
 
-    @GetMapping()
+    @GetMapping("/show")
     public List<Optional<Person>> adminPage() {
         return personService.showAllAdmins();
 
     }
 
-    @PostMapping("/add")
+    @PatchMapping("/add")
     public ResponseEntity<HttpStatus> addAdmin(@RequestParam("id_person") int id_person){
         personService.setAdmin(id_person);
         return ResponseEntity.ok(HttpStatus.OK);

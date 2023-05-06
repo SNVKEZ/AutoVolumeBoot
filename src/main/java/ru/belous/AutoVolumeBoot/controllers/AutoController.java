@@ -8,20 +8,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.belous.AutoVolumeBoot.dtos.AutoDTO;
 import ru.belous.AutoVolumeBoot.exceptions.DataNotFoundException;
-import ru.belous.AutoVolumeBoot.exceptions.NotValidDataException;
 import ru.belous.AutoVolumeBoot.services.AutoService;
 import ru.belous.AutoVolumeBoot.entities.Auto;
 import ru.belous.AutoVolumeBoot.services.PersonService;
 import ru.belous.AutoVolumeBoot.utils.CatchThrowOnErrorInBindingResult;
-import ru.belous.AutoVolumeBoot.utils.PersonErrorResponse;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-public class AutoController {
+public class AutoController extends ExceptionHandlerController {
     private final AutoService autoService;
     private final PersonService personService;
     private final SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss a zzz");
@@ -45,6 +42,11 @@ public class AutoController {
 
     @GetMapping("/auto/show/{id}")
     public AutoDTO showPersonAutos(@PathVariable("id") int id){
+        try {
+            autoService.showAutoById(id);
+        }catch (IllegalArgumentException e){
+            throw new DataNotFoundException();
+        }
         return autoService.showAutoById(id);
     }
 
@@ -64,7 +66,11 @@ public class AutoController {
 
     @DeleteMapping("/person/{username}/delete")
     public ResponseEntity<HttpStatus> deletePersonByUsername(@PathVariable("username") String username){
-        personService.deletePersonByUsername(username);
+        try {
+            personService.deletePersonByUsername(username);
+        }catch (Exception e){
+            throw new DataNotFoundException();
+        }
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -85,22 +91,5 @@ public class AutoController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @ResponseBody
-    @ExceptionHandler
-    private ResponseEntity<PersonErrorResponse> handlerException(DataNotFoundException e){
-        PersonErrorResponse response = new PersonErrorResponse(
-                "Data not found",
-                formatForDateNow.format(new Date())
-        );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-    @ResponseBody
-    @ExceptionHandler
-    private ResponseEntity<PersonErrorResponse> personException(NotValidDataException e){
-        PersonErrorResponse response = new PersonErrorResponse(
-                e.toString(),
-                formatForDateNow.format(new Date())
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+
 }

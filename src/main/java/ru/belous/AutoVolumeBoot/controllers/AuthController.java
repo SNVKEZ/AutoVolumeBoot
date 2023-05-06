@@ -52,12 +52,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Map<String , String> performLogin(@RequestBody AuthDTO dto){
+    public Map<String , String> performLogin(@RequestBody @Valid AuthDTO dto){
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(dto.getUsername(),dto.getPassword());
         try {
             authenticationManager.authenticate(authToken);
         }catch (BadCredentialsException e){
-            return Map.of("message","exception");
+            return Map.of("message","not right login or password");
         }
         String token = jwtUtil.generateToken(dto.getUsername());
         return Collections.singletonMap("jwt-token",token);
@@ -66,5 +66,4 @@ public class AuthController {
     private Person convertToPerson(PersonDTO personDTO){
         return this.modelMapper.map(personDTO, Person.class);
     }
-
 }

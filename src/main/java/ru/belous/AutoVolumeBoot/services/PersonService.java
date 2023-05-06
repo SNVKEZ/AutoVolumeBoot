@@ -33,13 +33,14 @@ public class PersonService implements UserDetailsService {
         this.modelMapper = modelMapper;
         this.autoService = autoService;
     }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Person> person = peopleRepo.findByUsername(username);
         if(person.isEmpty()) throw new UsernameNotFoundException("not user");
-
         return new PersonDetails(person.get());
     }
+
     @Transactional
     public void setAdmin(int id){
         Person person = peopleRepo.findById(id).orElse(null);
@@ -52,10 +53,15 @@ public class PersonService implements UserDetailsService {
     }
 
     @Transactional
-    public PersonDTO showOneDTO(int id){
-        Person person = peopleRepo.findById(id).orElse(null);
-        PersonDTO personDTO = convertToPersonDTO(person);
-        return personDTO;
+    public PersonDTO showOneDTO(String username){
+        Person person = peopleRepo.findByUsername(username).orElse(null);
+        return convertToPersonDTO(person);
+    }
+    @Transactional
+    public void changeYearOfBirth(String username, int year){
+        Person person = peopleRepo.findByUsername(username).orElse(null);
+        Objects.requireNonNull(person).setYearOfBirth(year);
+        peopleRepo.save(person);
     }
 
     @Transactional
