@@ -2,7 +2,6 @@ package ru.belous.AutoVolumeBoot.services;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,11 +40,10 @@ public class PersonService implements UserDetailsService {
 
         return new PersonDetails(person.get());
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public void setAdmin(int id){
         Person person = peopleRepo.findById(id).orElse(null);
-        person.setRole("ROLE_ADMIN");
+        Objects.requireNonNull(person).setRole("ROLE_ADMIN");
         peopleRepo.save(person);
     }
     @Transactional
@@ -60,6 +58,10 @@ public class PersonService implements UserDetailsService {
         return personDTO;
     }
 
+    @Transactional
+    public List<Optional<Person>> showAllAdmins(){
+        return peopleRepo.findAllByRole("ROLE_ADMIN");
+    }
     @Transactional
     public void save(@Valid Person person){
         peopleRepo.save(person);

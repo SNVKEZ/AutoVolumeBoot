@@ -1,6 +1,8 @@
 package ru.belous.AutoVolumeBoot.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -28,6 +30,7 @@ public class Person {
     private String password;
     
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Auto> autos;
 
     @Column(name = "role")

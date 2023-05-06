@@ -1,5 +1,7 @@
 package ru.belous.AutoVolumeBoot.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ public class Auto {
     private String color;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "person_id",referencedColumnName = "id")
     private Person owner;
 
