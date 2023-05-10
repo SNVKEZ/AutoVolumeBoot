@@ -12,7 +12,7 @@ import ru.belous.AutoVolumeBoot.services.PersonService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/people")
+@RequestMapping(path = "/people")
 public class PeopleController extends ExceptionHandlerController {
     private final PersonService personService;
 

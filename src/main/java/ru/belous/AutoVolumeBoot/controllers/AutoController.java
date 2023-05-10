@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/auto")
 public class AutoController extends ExceptionHandlerController {
     private final AutoService autoService;
     private final PersonService personService;
@@ -29,18 +30,18 @@ public class AutoController extends ExceptionHandlerController {
         this.personService = personService;
     }
 
-    @GetMapping("/auto/show")
+    @GetMapping("/show")
     public List<AutoDTO> showAutos(){
         return autoService.showAll();
     }
 
-    @PostMapping("/auto/add")
+    @PostMapping("/add")
     public ResponseEntity<HttpStatus> addAuto(@RequestBody @Valid Auto auto){
         autoService.addAuto(auto);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/auto/show/{id}")
+    @GetMapping("/show/{id}")
     public AutoDTO showPersonAutos(@PathVariable("id") int id){
         try {
             autoService.showAutoById(id);
@@ -74,14 +75,14 @@ public class AutoController extends ExceptionHandlerController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PatchMapping("/auto/{id}/color/change")
+    @PatchMapping("/{id}/color/change")
     public ResponseEntity<HttpStatus> changeColorAuto(@PathVariable("id") int id,
                                                       @RequestParam("color") String color){
         autoService.changeColorAutoById(id,color);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/auto/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteAutoById(@PathVariable("id") int id){
         try {
             autoService.deleteAutoById(id);
