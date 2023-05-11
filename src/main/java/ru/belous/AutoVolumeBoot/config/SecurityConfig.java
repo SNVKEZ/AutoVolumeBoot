@@ -96,7 +96,6 @@ public class SecurityConfig{
     }
 
     @Bean
-//    @Profile("dev")
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }

@@ -1,0 +1,86 @@
+databaseChangeLog:
+    - changeSet:
+          id: create-table-person
+          author: belous_dev
+          changes:
+              - createTable:
+                    tableName: person
+                    columns:
+                        - column:
+                              name: id
+                              type: int
+                              autoIncrement: true
+                              constraints:
+                                  primaryKey: true
+                        - column:
+                              name: username
+                              type: varchar(100)
+                              constraints:
+                                  unique: true
+                                  nullable: false
+                        - column:
+                              name: password
+                              type: varchar(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: year_of_birth
+                              type: varchar(4)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: role
+                              type: varchar(30)
+                              constraints:
+                                  nullable: false
+          rollback:
+              - dropTable:
+                    tableName: person
+    - changeSet:
+          id: create-table-auto
+          author: belous_dev
+          changes:
+              - createTable:
+                    tableName: auto
+                    columns:
+                        - column:
+                              name: id
+                              type: int
+                              autoIncrement: true
+                              constraints:
+                                  nullable: false
+                                  primaryKey: true
+                        - column:
+                              name: brand
+                              type: varchar(64)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: model
+                              type: varchar(64)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: year_of_issue
+                              type: varchar(4)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: color
+                              type: varchar(40)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: person_id
+                              type: int
+              - addForeignKeyConstraint:
+                    baseTableName: auto
+                    baseColumnNames: person_id
+                    constraintName: auto_person_id_person_id
+                    referencedTableName: person
+                    referencedColumnNames: id
+                    onUpdate: CASCADE
+                    deleteCascade: true
+          rollback:
+              - dropTable:
+                    tableName: person
