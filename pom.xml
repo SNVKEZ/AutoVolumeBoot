@@ -67,6 +67,7 @@
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
+			<version>4.9.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.modelmapper</groupId>
@@ -89,7 +90,18 @@
 
 			<plugin>
 				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-core</artifactId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<configuration>
+					<propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>update</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
