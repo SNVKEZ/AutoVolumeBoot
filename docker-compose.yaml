@@ -13,5 +13,4 @@ services:
     build: ./
     container_name: 'java-app'
     ports:
-      - "8080:8080"
-
+      - "8081:8081"
